@@ -32,11 +32,26 @@ class Node:
         self.name = None
 
     def classify(self, instance):
-        '''
-        given a single observation, will return the output of the tree
-        '''
-	# Your code here
-	pass
+		'''
+		given a single observation, will return the output of the tree
+		'''
+		
+		# if there is no label, split on a decision attribute 
+		if (self.label == None):
+			# get the attribute that's being split on 
+			attribute = instance[self.decision_attribute]
+			
+			if (self.is_nominal):
+				print "nominal doesn't work yet :("
+				return -1
+			else:
+				if (attribute < self.splitting_value):
+					return self.children[0].classify()
+				else:
+					return self.children[1].classify()
+		# otherwise we're done, and return the label
+		else:
+			return self.label
 
     def print_tree(self, indent = 0):
         '''
