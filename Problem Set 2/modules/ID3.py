@@ -19,17 +19,24 @@ def ID3(data_set, attribute_metadata, numerical_splits_count, depth):
     pass
 
 def check_homogenous(data_set):
-    '''
-    ========================================================================================================
-    Input:  A data_set
-    ========================================================================================================
-    Job:    Checks if the output value (index 0) is the same for all examples in the the data_set, if so return that output value, otherwise return None.
-    ========================================================================================================
-    Output: Return either the homogenous attribute or None
-    ========================================================================================================
-     '''
-    # Your code here
-    pass
+	'''
+	========================================================================================================
+	Input:  A data_set
+	========================================================================================================
+	Job:    Checks if the output value (index 0) is the same for all examples in the the data_set, if so return that output value, otherwise return None.
+	========================================================================================================
+	Output: Return either the homogenous attribute or None
+	========================================================================================================
+	 '''
+	 
+	output = data_set[0][0]
+	
+	for value in data_set:
+		if output != value[0]:
+			return None
+	
+	return output
+	
 # ======== Test Cases =============================
 # data_set = [[0],[1],[1],[1],[1],[1]]
 # check_homogenous(data_set) ==  None
