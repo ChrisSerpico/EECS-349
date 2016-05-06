@@ -42,13 +42,12 @@ class Node:
 			attribute = instance[self.decision_attribute]
 			
 			if (self.is_nominal):
-				print "nominal doesn't work yet :("
-				return -1
+				return self.children[attribute].classify(instance)
 			else:
 				if (attribute < self.splitting_value):
-					return self.children[0].classify()
+					return self.children[0].classify(instance)
 				else:
-					return self.children[1].classify()
+					return self.children[1].classify(instance)
 		# otherwise we're done, and return the label
 		else:
 			return self.label
