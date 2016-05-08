@@ -175,18 +175,28 @@ def split_on_nominal(data_set, attribute):
 # split on_nominal(data_set, attr) == {0: [[1, 0], [0, 0]], 1: [[0, 1]], 2: [[1, 2], [0, 2], [1, 2]], 3: [[1, 3], [0, 3]], 4: [[0, 4], [0, 4]]}
 
 def split_on_numerical(data_set, attribute, splitting_value):
-    '''
-    ========================================================================================================
-    Input:  Subset of data set, the index for a numeric attribute, threshold (splitting) value
-    ========================================================================================================
-    Job:    Splits data_set into a tuple of two lists, the first list contains the examples where the given
+	'''
+	========================================================================================================
+	Input:  Subset of data set, the index for a numeric attribute, threshold (splitting) value
+	========================================================================================================
+	Job:    Splits data_set into a tuple of two lists, the first list contains the examples where the given
 	attribute has value less than the splitting value, the second list contains the other examples
-    ========================================================================================================
-    Output: Tuple of two lists as described above
-    ========================================================================================================
-    '''
-    # Your code here
-    pass
+	========================================================================================================
+	Output: Tuple of two lists as described above
+	========================================================================================================
+	'''
+	
+	less_than = []
+	greater_than = []
+	
+	for item in data_set:
+		if (item[attribute] < splitting_value):
+			less_than.append(item)
+		else:
+			greater_than.append(item)
+			
+	return (less_than, greater_than)
+		
 # ======== Test case =============================
 # d_set,a,sval = [[1, 0.25], [1, 0.89], [0, 0.93], [0, 0.48], [1, 0.19], [1, 0.49], [0, 0.6], [0, 0.6], [1, 0.34], [1, 0.19]],1,0.48
 # split_on_numerical(d_set,a,sval) == ([[1, 0.25], [1, 0.19], [1, 0.34], [1, 0.19]],[[1, 0.89], [0, 0.93], [0, 0.48], [1, 0.49], [0, 0.6], [0, 0.6]])
