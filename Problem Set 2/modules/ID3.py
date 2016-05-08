@@ -134,26 +134,31 @@ def entropy(data_set):
 
 
 def gain_ratio_nominal(data_set, attribute):
-    '''
-    ========================================================================================================
-    Input:  Subset of data_set, index for a nominal attribute
-    ========================================================================================================
-    Job:    Finds the gain ratio of a nominal attribute in relation to the variable we are training on.
-    ========================================================================================================
-    Output: Returns gain_ratio. See https://en.wikipedia.org/wiki/Information_gain_ratio
-    ========================================================================================================
-    '''
+	'''
+	========================================================================================================
+	Input:  Subset of data_set, index for a nominal attribute
+	========================================================================================================
+	Job:    Finds the gain ratio of a nominal attribute in relation to the variable we are training on.
+	========================================================================================================
+	Output: Returns gain_ratio. See https://en.wikipedia.org/wiki/Information_gain_ratio
+	========================================================================================================
+	'''
 	
 	ent = entropy(data_set)
 	
 	# calculate information gain
-	values = {}
+	sets = []
 	
 	for item in data_set:
-		
-		
+		appended = False
+		for s in sets:
+			if (item[attribute] == s[0][attribute]):
+				s.append(item)
+				appended = True
+		if appended == False:
+			sets.append([item])
 	
-    pass
+	return -1 
 # ======== Test case =============================
 # data_set, attr = [[1, 2], [1, 0], [1, 0], [0, 2], [0, 2], [0, 0], [1, 3], [0, 4], [0, 3], [1, 1]], 1
 # gain_ratio_nominal(data_set,attr) == 0.11470666361703151
@@ -163,21 +168,21 @@ def gain_ratio_nominal(data_set, attribute):
 # gain_ratio_nominal(data_set,attr) == 0.06409559743967516
 
 def gain_ratio_numeric(data_set, attribute, steps):
-    '''
-    ========================================================================================================
-    Input:  Subset of data set, the index for a numeric attribute, and a step size for normalizing the data.
-    ========================================================================================================
-    Job:    Calculate the gain_ratio_numeric and find the best single threshold value
-            The threshold will be used to split examples into two sets
-                 those with attribute value GREATER THAN OR EQUAL TO threshold
-                 those with attribute value LESS THAN threshold
-            Use the equation here: https://en.wikipedia.org/wiki/Information_gain_ratio
-            And restrict your search for possible thresholds to examples with array index mod(step) == 0
-    ========================================================================================================
-    Output: This function returns the gain ratio and threshold value
-    ========================================================================================================
-    '''
-    # calculate information gain
+	'''
+	========================================================================================================
+	Input:  Subset of data set, the index for a numeric attribute, and a step size for normalizing the data.
+	========================================================================================================
+	Job:    Calculate the gain_ratio_numeric and find the best single threshold value
+			The threshold will be used to split examples into two sets
+				 those with attribute value GREATER THAN OR EQUAL TO threshold
+				 those with attribute value LESS THAN threshold
+			Use the equation here: https://en.wikipedia.org/wiki/Information_gain_ratio
+			And restrict your search for possible thresholds to examples with array index mod(step) == 0
+	========================================================================================================
+	Output: This function returns the gain ratio and threshold value
+	========================================================================================================
+	'''
+	# calculate information gain
 	pass
 	
 # ======== Test case =============================
