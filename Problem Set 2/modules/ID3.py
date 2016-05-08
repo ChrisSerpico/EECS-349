@@ -1,6 +1,7 @@
 import math
 from node import Node
 import sys
+from collections import Counter
 
 def ID3(data_set, attribute_metadata, numerical_splits_count, depth):
     '''
@@ -73,17 +74,23 @@ def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
 # Uses gain_ratio_nominal or gain_ratio_numeric to calculate gain ratio.
 
 def mode(data_set):
-    '''
-    ========================================================================================================
-    Input:  A data_set
-    ========================================================================================================
-    Job:    Takes a data_set and finds mode of index 0.
-    ========================================================================================================
-    Output: mode of index 0.
-    ========================================================================================================
-    '''
-    # Your code here
-    pass
+	'''
+	========================================================================================================
+	Input:  A data_set
+	========================================================================================================
+	Job:    Takes a data_set and finds mode of index 0.
+	========================================================================================================
+	Output: mode of index 0.
+	========================================================================================================
+	'''
+    
+	c = Counter()
+	
+	for item in data_set:
+		c[item[0]] += 1 
+		
+	return c.most_common(1)[0][0]
+		
 # ======== Test case =============================
 # data_set = [[0],[1],[1],[1],[1],[1]]
 # mode(data_set) == 1
