@@ -1,7 +1,9 @@
+from __future__ import division
 import math
 from node import Node
 import sys
 from collections import Counter
+from math import log
 
 def ID3(data_set, attribute_metadata, numerical_splits_count, depth):
     '''
@@ -98,16 +100,29 @@ def mode(data_set):
 # mode(data_set) == 0
 
 def entropy(data_set):
-    '''
-    ========================================================================================================
-    Input:  A data_set
-    ========================================================================================================
-    Job:    Calculates the entropy of the attribute at the 0th index, the value we want to predict.
-    ========================================================================================================
-    Output: Returns entropy. See Textbook for formula
-    ========================================================================================================
-    '''
-
+	'''
+	========================================================================================================
+	Input:  A data_set
+	========================================================================================================
+	Job:    Calculates the entropy of the attribute at the 0th index, the value we want to predict.
+	========================================================================================================
+	Output: Returns entropy. See Textbook for formula
+	========================================================================================================
+	'''
+	
+	c = Counter()
+	
+	for item in data_set:
+		c[item[0]] += 1 
+		
+	total = sum(c.values())
+	
+	to_return = 0
+	
+	for tup in c.most_common():
+		to_return += (tup[1]/total) * log((tup[1]/total), 2)
+		
+	return -to_return
 
 # ======== Test case =============================
 # data_set = [[0],[1],[1],[1],[0],[1],[1],[1]]
