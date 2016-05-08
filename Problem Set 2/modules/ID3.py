@@ -157,17 +157,26 @@ def gain_ratio_numeric(data_set, attribute, steps):
 # gain_ratio_numeric(data_set,attr,step) == (0.23645279766002802, 0.29)
 
 def split_on_nominal(data_set, attribute):
-    '''
-    ========================================================================================================
-    Input:  subset of data set, the index for a nominal attribute.
-    ========================================================================================================
-    Job:    Creates a dictionary of all values of the attribute.
-    ========================================================================================================
-    Output: Dictionary of all values pointing to a list of all the data with that attribute
-    ========================================================================================================
-    '''
-    # Your code here
-    pass
+	'''
+	========================================================================================================
+	Input:  subset of data set, the index for a nominal attribute.
+	========================================================================================================
+	Job:    Creates a dictionary of all values of the attribute.
+	========================================================================================================
+	Output: Dictionary of all values pointing to a list of all the data with that attribute
+	========================================================================================================
+	'''
+	
+	d = {}
+	
+	for item in data_set:
+		if item[attribute] not in d:
+			d[item[attribute]] = [item]
+		else:
+			d[item[attribute]].append(item)
+			
+	return d
+	
 # ======== Test case =============================
 # data_set, attr = [[0, 4], [1, 3], [1, 2], [0, 0], [0, 0], [0, 4], [1, 4], [0, 2], [1, 2], [0, 1]], 1
 # split_on_nominal(data_set, attr) == {0: [[0, 0], [0, 0]], 1: [[0, 1]], 2: [[1, 2], [0, 2], [1, 2]], 3: [[1, 3]], 4: [[0, 4], [0, 4], [1, 4]]}
