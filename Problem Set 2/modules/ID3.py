@@ -143,7 +143,16 @@ def gain_ratio_nominal(data_set, attribute):
     Output: Returns gain_ratio. See https://en.wikipedia.org/wiki/Information_gain_ratio
     ========================================================================================================
     '''
-    # Your code here
+	
+	ent = entropy(data_set)
+	
+	# calculate information gain
+	values = {}
+	
+	for item in data_set:
+		
+		
+	
     pass
 # ======== Test case =============================
 # data_set, attr = [[1, 2], [1, 0], [1, 0], [0, 2], [0, 2], [0, 0], [1, 3], [0, 4], [0, 3], [1, 1]], 1
@@ -168,8 +177,9 @@ def gain_ratio_numeric(data_set, attribute, steps):
     Output: This function returns the gain ratio and threshold value
     ========================================================================================================
     '''
-    # Your code here
-    pass
+    # calculate information gain
+	pass
+	
 # ======== Test case =============================
 # data_set,attr,step = [[0,0.05], [1,0.17], [1,0.64], [0,0.38], [0,0.19], [1,0.68], [1,0.69], [1,0.17], [1,0.4], [0,0.53]], 1, 2
 # gain_ratio_numeric(data_set,attr,step) == (0.31918053332474033, 0.64)
