@@ -199,8 +199,38 @@ def gain_ratio_numeric(data_set, attribute, steps):
 	Output: This function returns the gain ratio and threshold value
 	========================================================================================================
 	'''
-	# calculate information gain
-	pass
+	# get total entropy 
+	ent = entropy(data_set)
+	
+	# try multiple different splits
+	split_index = 0 
+	best_threshold = 0
+	best_ratio = 0
+	
+	while (split_index < len(data_set)):
+		new_split = split_on_numerical(data_set, attribute, data_set[split_index][attribute])
+		
+		if (len(new_split[0]) != 0 and len(new_split[1]) != 0):
+			# calculate information gain 
+			total = len(new_split[0]) + len(new_split[1])
+			info_gain = ent - ((len(new_split[0])/total) * entropy(new_split[0])) - (((len(new_split[1])/total)) * entropy(new_split[1]))
+			
+			# calculate intrinsic value 
+			int_value = - ((len(new_split[0])/total) * log(len(new_split[0])/total, 2)) - ((len(new_split[1])/total) * log(len(new_split[1])/total, 2))
+			
+			# calculate ratio
+			new_ratio = info_gain / int_value
+		else:
+			new_ratio = 0 
+		
+		# see if this ratio is better
+		if new_ratio > best_ratio:
+			best_ratio = new_ratio
+			best_threshold = data_set[split_index][attribute]
+			
+		split_index += steps
+	
+	return (best_ratio, best_threshold)
 	
 # ======== Test case =============================
 # data_set,attr,step = [[0,0.05], [1,0.17], [1,0.64], [0,0.38], [0,0.19], [1,0.68], [1,0.69], [1,0.17], [1,0.4], [0,0.53]], 1, 2
