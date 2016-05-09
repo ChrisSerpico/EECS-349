@@ -148,7 +148,9 @@ def gain_ratio_nominal(data_set, attribute):
 	
 	# calculate information gain
 	sets = []
+	total = 0 
 	
+	# split list
 	for item in data_set:
 		appended = False
 		for s in sets:
@@ -157,8 +159,23 @@ def gain_ratio_nominal(data_set, attribute):
 				appended = True
 		if appended == False:
 			sets.append([item])
+		total += 1 
 	
-	return -1 
+	# for each sub-list, calculate fractional entropy and subtract it from total
+	info_gain = ent
+	
+	for item in sets:
+		info_gain -= ((len(item)/total)  * entropy(item))
+	
+	
+	# calculate intrinsic value
+	int_value = 0
+	
+	for item in sets:
+		int_value -= ((len(item)/total) * log(len(item)/total, 2))
+		
+	# return ratio
+	return (info_gain/int_value)
 # ======== Test case =============================
 # data_set, attr = [[1, 2], [1, 0], [1, 0], [0, 2], [0, 2], [0, 0], [1, 3], [0, 4], [0, 3], [1, 1]], 1
 # gain_ratio_nominal(data_set,attr) == 0.11470666361703151
