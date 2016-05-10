@@ -58,9 +58,8 @@ def ID3(data_set, attribute_metadata, numerical_splits_count, depth):
 			values = split_on_nominal(data_set, root.decision_attribute)
 			
 			for key in values.keys():
-				for item in values[key]:
-					depth -= 1 
-					root.children[key] = ID3(item, attribute_metadata, numerical_splits_count, depth)
+				depth -= 1 
+				root.children[key] = ID3(values[key], attribute_metadata, numerical_splits_count, depth)
 		else:
 			# if the attribute we're splitting on is numeric, we know the best split from pick_best_attribute
 			root.splitting_value = attribute[1]
@@ -87,7 +86,7 @@ def check_homogenous(data_set):
 	Output: Return either the homogenous attribute or None
 	========================================================================================================
 	 '''
-	 
+	
 	output = data_set[0][0]
 	
 	for value in data_set:
@@ -131,7 +130,7 @@ def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
 			
 			# make sure we're allowed to split on this attribute
 			if numerical_splits_count[index] != 0:
-				new_values = gain_ratio_numeric(data_set, index, 1)
+				new_values = gain_ratio_numeric(data_set, index, 1000)
 				
 				if new_values[0] > best_ratio:
 					best_ratio = new_values[0]
@@ -268,6 +267,8 @@ def gain_ratio_nominal(data_set, attribute):
 		int_value -= ((len(item)/total) * log(len(item)/total, 2))
 		
 	# return ratio
+	if (int_value == 0):
+		return 0
 	return (info_gain/int_value)
 # ======== Test case =============================
 # data_set, attr = [[1, 2], [1, 0], [1, 0], [0, 2], [0, 2], [0, 0], [1, 3], [0, 4], [0, 3], [1, 1]], 1
