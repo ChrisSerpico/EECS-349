@@ -52,13 +52,13 @@ class Node:
 		else:
 			return self.label
 
-    def print_dnf_tree(self):
-        '''
-        returns the disjunct normalized form of the tree.
-        '''
-        nodes = []
-        output = ''
-        print self.dnf_recurse(nodes, output)[:-3]
+    #def print_dnf_tree(self):
+    #    '''
+    #    returns the disjunct normalized form of the tree.
+    #    '''
+    #    nodes = []
+    #    output = ''
+    #    print self.dnf_recurse(nodes, output)[:-3]
 
     def dnfRecurse(self, nodes, direction, output):
         if self.label == None:
@@ -99,7 +99,13 @@ class Node:
         direction = []
         output = ''
         print self.dnfRecurse(nodes, direction, output)[:-3]
-
+	
+    def print_tree(self, indent = 0):
+        '''
+        returns a string of the entire tree in human readable form
+        IMPLEMENTING THIS FUNCTION IS OPTIONAL
+        '''
+        pass
 
 # n3 = Node()
 # n3.label = 1
@@ -132,14 +138,6 @@ class Node:
 # n.name = "weather"
 # n.children = {"sunny": n0, "rainy": n5}
 # n.print_dnf_tree()
-
-    # def print_tree(self, indent = 0):
-    #     '''
-    #     returns a string of the entire tree in human readable form
-    #     IMPLEMENTING THIS FUNCTION IS OPTIONAL
-    #     '''
-    #     # Your code here
-    #     pass
 
     # def dnf_recurse(self, nodes, output):
     #     if (self.label == None):

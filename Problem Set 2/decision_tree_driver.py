@@ -16,8 +16,8 @@ options = {
     'predict': 'data/btest.csv',
     'limit_splits_on_numerical': 5,
     'limit_depth': 20,
-    'print_tree': True,
-    'print_dnf' : False,
+    'print_tree': False,
+    'print_dnf' : True,
     'prune' : 'data/bvalidate.csv',
     'learning_curve' : {
         'upper_bound' : 0.05,
