@@ -52,17 +52,116 @@ class Node:
 		else:
 			return self.label
 
-    def print_tree(self, indent = 0):
+    def print_dnf_tree(self):
         '''
-        returns a string of the entire tree in human readable form
-        IMPLEMENTING THIS FUNCTION IS OPTIONAL
+        returns the disjunct normalized form of the tree.
         '''
-        # Your code here
-        pass
+        nodes = []
+        output = ''
+        print self.dnf_recurse(nodes, output)[:-3]
 
+    def dnfRecurse(self, nodes, direction, output):
+        if self.label == None:
+            newNodes = nodes
+            newDirection = direction
+            newOutput = output  
+            newNodes.append(self)
+            newDirection.append('0') 
+            if self.is_nominal:
+                for key in self.children: 
+                    newDirection[-1] = str(key)
+                    newOutput += self.children[key].dnfRecurse(newNodes, newDirection, output) 
+            else:
+                for i in [0,1]:
+                    newDirection[-1] = str(i)
+                    newOutput += self.children[i].dnfRecurse(newNodes, newDirection, output)
+            return newOutput
+        elif self.label == 1:
+            newOutput = '('
+            for i in range(0, len(nodes)):
+                n = nodes[i]
+                if n.is_nominal:
+                    newOutput += n.name + '=' + direction[i] + ' ^ '
+                elif int(direction[i]):
+                    newOutput += n.name + '>=' + str(n.splitting_value) + ' ^ '
+                else:
+                    newOutput += n.name + '<' + str(n.splitting_value) + ' ^ '
+            newOutput = newOutput[:-3] + ') v '
+            return newOutput
+        else:
+            return ''
 
     def print_dnf_tree(self):
         '''
         returns the disjunct normalized form of the tree.
         '''
-        pass
+        nodes = []
+        direction = []
+        output = ''
+        print self.dnfRecurse(nodes, direction, output)[:-3]
+
+
+n3 = Node()
+n3.label = 1
+n3.name = 'oppWinPercentage'
+
+n4 = Node()
+n4.label = 0
+n4.name = 'winPercentage'
+
+n5 = Node()
+n5.label = None
+n5.decision_attribute = 1
+n5.is_nominal = True
+n5.name = "startingPitcher"
+n5.children = {"Derek Jeter": n3, "Babe Ruth": n4}
+
+n0 = Node()
+n0.label = 1
+n0.decision_attribute = 1
+n0.name = 'homeOrAway'
+
+n1 = Node()
+n1.label = 0
+n1.name = 'Temperature'
+
+n = Node()
+n.label = None
+n.decision_attribute = 1
+n.is_nominal = True
+n.name = "weather"
+n.children = {"sunny": n0, "rainy": n5}
+n.print_dnf_tree()
+
+    # def print_tree(self, indent = 0):
+    #     '''
+    #     returns a string of the entire tree in human readable form
+    #     IMPLEMENTING THIS FUNCTION IS OPTIONAL
+    #     '''
+    #     # Your code here
+    #     pass
+
+    # def dnf_recurse(self, nodes, output):
+    #     if (self.label == None):
+    #         newNodes = nodes
+    #         newNodes.append(self)
+    #         newOutput = output
+    #         for c in self.children:
+    #             newOutput += self.children[c].dnf_recurse(newNodes, output)
+    #         return newOutput
+    #     elif (self.label == 1):
+    #         newOutput = '('
+    #         for n in nodes:
+    #             if (n.decision_attribute != None):
+    #                 if(n.is_nominal):
+    #                     newOutput += n.name + '=' + str(n.decision_attribute) + ' ^ ' #questionable
+    #                 else:
+    #                     if(n.children[n.decision_attribute] == n.children[0].node):
+    #                         newOutput += n.name + '<' + str(n.splitting_value) + ' ^ '
+    #                     else:
+    #                         newOutput += n.name + '>=' + str(n.splitting_value) + ' ^ '
+
+    #         newOutput = newOutput[:-3] + ') v '
+    #         return newOutput
+    #     else:
+    #         return '';
