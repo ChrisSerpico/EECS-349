@@ -20,6 +20,12 @@
 #
 # name - name of the attribute being split on
 
+def convertToInt(a) :
+    if (a == None):
+        return 0;
+    else:
+        return int(a)
+
 class Node:
     def __init__(self):
         # initialize all attributes
@@ -51,14 +57,7 @@ class Node:
 		# otherwise we're done, and return the label
 		else:
 			return self.label
-
-    #def print_dnf_tree(self):
-    #    '''
-    #    returns the disjunct normalized form of the tree.
-    #    '''
-    #    nodes = []
-    #    output = ''
-    #    print self.dnf_recurse(nodes, output)[:-3]
+# NEW WORK
 
     def dnfRecurse(self, nodes, direction, output):
         if self.label == None:
@@ -80,12 +79,13 @@ class Node:
             newOutput = '('
             for i in range(0, len(nodes)):
                 n = nodes[i]
-                if n.is_nominal:
-                    newOutput += n.name + '=' + direction[i] + ' ^ '
-                elif int(direction[i]):
-                    newOutput += n.name + '>=' + str(n.splitting_value) + ' ^ '
-                else:
-                    newOutput += n.name + '<' + str(n.splitting_value) + ' ^ '
+                if (direction[i] != 'None'):
+                    if n.is_nominal:
+                        newOutput += n.name + '=' + direction[i] + ' ^ '
+                    elif int(direction[i]):
+                        newOutput += n.name + '>=' + str(n.splitting_value) + ' ^ '
+                    else:
+                        newOutput += n.name + '<' + str(n.splitting_value) + ' ^ '
             newOutput = newOutput[:-3] + ') v '
             return newOutput
         else:
@@ -138,6 +138,15 @@ class Node:
 # n.name = "weather"
 # n.children = {"sunny": n0, "rainy": n5}
 # n.print_dnf_tree()
+
+
+    # def print_dnf_tree(self):
+    #    '''
+    #    returns the disjunct normalized form of the tree.
+    #    '''
+    #    nodes = []
+    #    output = ''
+    #    print self.dnf_recurse(nodes, output)[:-3]
 
     # def dnf_recurse(self, nodes, output):
     #     if (self.label == None):
