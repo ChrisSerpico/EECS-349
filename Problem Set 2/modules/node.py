@@ -101,37 +101,37 @@ class Node:
         print self.dnfRecurse(nodes, direction, output)[:-3]
 
 
-n3 = Node()
-n3.label = 1
-n3.name = 'oppWinPercentage'
+# n3 = Node()
+# n3.label = 1
+# n3.name = 'oppWinPercentage'
 
-n4 = Node()
-n4.label = 0
-n4.name = 'winPercentage'
+# n4 = Node()
+# n4.label = 0
+# n4.name = 'winPercentage'
 
-n5 = Node()
-n5.label = None
-n5.decision_attribute = 1
-n5.is_nominal = True
-n5.name = "startingPitcher"
-n5.children = {"Derek Jeter": n3, "Babe Ruth": n4}
+# n5 = Node()
+# n5.label = None
+# n5.decision_attribute = 1
+# n5.is_nominal = True
+# n5.name = "startingPitcher"
+# n5.children = {"Derek Jeter": n3, "Babe Ruth": n4}
 
-n0 = Node()
-n0.label = 1
-n0.decision_attribute = 1
-n0.name = 'homeOrAway'
+# n0 = Node()
+# n0.label = 1
+# n0.decision_attribute = 1
+# n0.name = 'homeOrAway'
 
-n1 = Node()
-n1.label = 0
-n1.name = 'Temperature'
+# n1 = Node()
+# n1.label = 0
+# n1.name = 'Temperature'
 
-n = Node()
-n.label = None
-n.decision_attribute = 1
-n.is_nominal = True
-n.name = "weather"
-n.children = {"sunny": n0, "rainy": n5}
-n.print_dnf_tree()
+# n = Node()
+# n.label = None
+# n.decision_attribute = 1
+# n.is_nominal = True
+# n.name = "weather"
+# n.children = {"sunny": n0, "rainy": n5}
+# n.print_dnf_tree()
 
     # def print_tree(self, indent = 0):
     #     '''
