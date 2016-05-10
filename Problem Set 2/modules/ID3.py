@@ -49,20 +49,55 @@ def check_homogenous(data_set):
 # check_homogenous(data_set) ==  1
 
 def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
-    '''
-    ========================================================================================================
-    Input:  A data_set, attribute_metadata, splits counts for numeric
-    ========================================================================================================
-    Job:    Find the attribute that maximizes the gain ratio. If attribute is numeric return best split value.
-            If nominal, then split value is False.
-            If gain ratio of all the attributes is 0, then return False, False
-            Only consider numeric splits for which numerical_splits_count is greater than zero
-    ========================================================================================================
-    Output: best attribute, split value if numeric
-    ========================================================================================================
-    '''
-    # Your code here
-    pass
+	'''
+	========================================================================================================
+	Input:  A data_set, attribute_metadata, splits counts for numeric
+	========================================================================================================
+	Job:    Find the attribute that maximizes the gain ratio. If attribute is numeric return best split value.
+			If nominal, then split value is False.
+			If gain ratio of all the attributes is 0, then return False, False
+			Only consider numeric splits for which numerical_splits_count is greater than zero
+	========================================================================================================
+	Output: best attribute, split value if numeric
+	========================================================================================================
+	'''
+    
+	best_attribute = -1 
+	split_value = -1 
+	
+	# loop through non-winner attributes
+	index = 1 
+	best_ratio = 0 
+	while (index < len(attribute_metadata)):
+		# check whether the attribute is nominal or numeric
+		if (attribute_metadata[index]['is_nominal'] == False):
+			# data is numeric
+			
+			# make sure we're allowed to split on this attribute
+			if numerical_splits_count[index] != 0:
+				new_values = gain_ratio_numeric(data_set, index, 1)
+				
+				if new_values[0] > best_ratio:
+					best_ratio = new_values[0]
+					best_attribute = index
+					split_value = new_values[1]
+		else:
+			# data is nominal
+			new_ratio = gain_ratio_nominal(data_set, index)
+			
+			if new_ratio > best_ratio:
+				best_ratio = new_ratio
+				best_attribute = index
+				split_value = -1
+		
+		index += 1 
+				
+	# if we have a split_value, return it, otherwise return false
+	if (split_value == -1):
+		return (best_attribute, False)
+	else:
+		return (best_attribute, split_value)
+			
 
 # # ======== Test Cases =============================
 # numerical_splits_count = [20,20]
