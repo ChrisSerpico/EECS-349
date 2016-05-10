@@ -6,20 +6,76 @@ from collections import Counter
 from math import log
 
 def ID3(data_set, attribute_metadata, numerical_splits_count, depth):
-    '''
-    See Textbook for algorithm.
-    Make sure to handle unknown values, some suggested approaches were
-    given in lecture.
-    ========================================================================================================
-    Input:  A data_set, attribute_metadata, maximum number of splits to consider for numerical attributes,
+	'''
+	See Textbook for algorithm.
+	Make sure to handle unknown values, some suggested approaches were
+	given in lecture.
+	========================================================================================================
+	Input:  A data_set, attribute_metadata, maximum number of splits to consider for numerical attributes,
 	maximum depth to search to (depth = 0 indicates that this node should output a label)
-    ========================================================================================================
-    Output: The node representing the decision tree learned over the given data set
-    ========================================================================================================
+	========================================================================================================
+	Output: The node representing the decision tree learned over the given data set
+	========================================================================================================
 
-    '''
-    # Your code here
-    pass
+	'''
+	
+	root = Node()
+	root.label = None 
+	
+	# if examples is empty, return default (0 I guess?)
+	if (len(data_set) == 0):
+		root.label = 0
+		return root
+	# if examples are all classified the same, return that classification 
+	elif (check_homogenous(data_set) != None):
+		root.label = check_homogenous(data_set)
+		return root
+	# if we have no attributes or if we've reached the maximum depth, return mode of the examples
+	elif (len(data_set[0]) < 2) or (depth <= 0):
+		root.label = mode(data_set)
+		return root
+	# otherwise, perform the entire algorithm 
+	else:
+		# get the best attribute 
+		attribute = pick_best_attribute(data_set, attribute_metadata, numerical_splits_count)
+		
+		# if we can't get any more information by splitting, just set the mode as the label 
+		if (attribute[0] == False):
+			root.label = mode(data_set)
+			return root 
+		
+		# read the data into node
+		root.is_nominal = attribute_metadata[attribute[0]]['is_nominal'] 
+		root.decision_attribute = attribute[0] 
+		root.name = attribute_metadata[attribute[0]]['name']
+		
+		# next step depends on whether attribute is nominal 
+		if (root.is_nominal):
+			# if the attribute we're splitting on is nominal, create a dictionary with all possibilities 
+			root.children = {} 
+			
+			# get possible values 
+			values = split_on_nominal(data_set, root.decision_attribute)
+			
+			for key in values.keys():
+				for item in values[key]:
+					depth -= 1 
+					root.children[key] = ID3(item, attribute_metadata, numerical_splits_count, depth)
+		else:
+			# if the attribute we're splitting on is numeric, we know the best split from pick_best_attribute
+			root.splitting_value = attribute[1]
+			
+			# now split the data properly
+			values = split_on_numerical(data_set, root.decision_attribute, root.splitting_value)
+			
+			# now create the two children
+			root.children = []
+			numerical_splits_count[root.decision_attribute] -= 1 
+			depth -= 1
+			root.children.append(ID3(values[0], attribute_metadata, numerical_splits_count, depth))
+			root.children.append(ID3(values[1], attribute_metadata, numerical_splits_count, depth))
+	
+	return root
 
 def check_homogenous(data_set):
 	'''
@@ -93,7 +149,9 @@ def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
 		index += 1 
 				
 	# if we have a split_value, return it, otherwise return false
-	if (split_value == -1):
+	if (best_attribute == -1):
+		return (False, False)
+	elif (split_value == -1):
 		return (best_attribute, False)
 	else:
 		return (best_attribute, split_value)
@@ -329,4 +387,4 @@ def split_on_numerical(data_set, attribute, splitting_value):
 # d_set,a,sval = [[1, 0.25], [1, 0.89], [0, 0.93], [0, 0.48], [1, 0.19], [1, 0.49], [0, 0.6], [0, 0.6], [1, 0.34], [1, 0.19]],1,0.48
 # split_on_numerical(d_set,a,sval) == ([[1, 0.25], [1, 0.19], [1, 0.34], [1, 0.19]],[[1, 0.89], [0, 0.93], [0, 0.48], [1, 0.49], [0, 0.6], [0, 0.6]])
 # d_set,a,sval = [[0, 0.91], [0, 0.84], [1, 0.82], [1, 0.07], [0, 0.82],[0, 0.59], [0, 0.87], [0, 0.17], [1, 0.05], [1, 0.76]],1,0.17
-# split_on_numerical(d_set,a,sval) == ([[1, 0.07], [1, 0.05]],[[0, 0.91],[0, 0.84], [1, 0.82], [0, 0.82], [0, 0.59], [0, 0.87], [0, 0.17], [1, 0.76]])
+# split_on_numerical(d_set,a,sval) == ([[1, 0.07], [1, 0.05]],[[0, 0.91],[0, 0.84], [1, 0.82], [0, 0.82], [0, 0.59], [0, 0.87], [0, 0.17], [1, 0.76]]))
